@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - App",
+            "request": "launch",
+            "mainClass": "evt4j.gradle.demo.App",
+            "projectName": "evt4j-gradle-demo"
+        }
+    ]
+}
