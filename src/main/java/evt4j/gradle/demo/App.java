@@ -3,8 +3,6 @@
  */
 package evt4j.gradle.demo;
 
-import java.util.Arrays;
-import java.util.List;
 
 import io.everitoken.sdk.java.Address;
 import io.everitoken.sdk.java.Api;
@@ -20,6 +18,9 @@ import io.everitoken.sdk.java.param.TestNetNetParams;
 import io.everitoken.sdk.java.provider.KeyProvider;
 import io.everitoken.sdk.java.service.TransactionConfiguration;
 import io.everitoken.sdk.java.service.TransactionService;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class App {
     public static void main(String[] args) {
@@ -60,12 +61,15 @@ public class App {
             // init transaction service with net parameters
             TransactionService transactionService = TransactionService.of(netParams);
 
+            NodeInfo nodeInfo = new Api().getInfo();
+
+            KeyProvider keyProvider = KeyProvider.of(privateKey.toWif());
             // init transaction configuration
-            TransactionConfiguration trxConfig = new TransactionConfiguration(1000000, publicKey,
-                    KeyProvider.of(privateKey.toWif()));
+            TransactionConfiguration trxConfig =  TransactionConfiguration.of(nodeInfo, 1000000, publicKey );
 
             // push this action to the node and get back an transaction
-            TransactionData txData = transactionService.push(trxConfig, Arrays.asList(transferFungibleAction));
+            TransactionData txData = transactionService.push(trxConfig, Arrays.asList(transferFungibleAction), false,
+                                                             keyProvider);
             System.out.println(txData.getTrxId());
         } catch (ApiResponseException ex) {
             System.out.println(ex.getRaw());
